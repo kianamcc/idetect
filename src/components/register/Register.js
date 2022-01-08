@@ -1,0 +1,101 @@
+import React from 'react';
+
+// auto - height automatically adjusted based on width
+// props are the parameters
+class Register extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            registerEmail: '',
+            registerPassword: '',
+            name: '',
+        }
+    }
+
+    onNameChange = (event) => {
+        this.setState({name: event.target.value})
+    }
+
+    onEmailChange = (event) => {
+        this.setState({email: event.target.value})
+    }
+
+    onPasswordChange = (event) => {
+        this.setState({password: event.target.value})
+    }
+
+    onSubmitSignIn = () => {
+        fetch('https://facialrecognitionapi.herokuapp.com/register',  { // send to whatever host api server is on
+            method: 'post',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                email: this.state.email,
+                password: this.state.password,
+                name: this.state.name
+            })
+        })
+        .then(response => response.json())
+        .then(user => {
+            if (user.id) {
+                this.props.loadUser(user) // built in app component cause many might need this
+                this.props.onRouteChange("home");
+            }
+        })
+        .catch(err => console.log(err));
+    }
+
+    render() {
+        return (
+            <article className="br3 ba b--white mv4 w-100 w-50-m w-25-l mw6 shadow-5 center">
+                <main className="pa4 white">
+                    <div className="measure">
+                        <fieldset id="sign_up" className="ba b--transparent ph0 mh0">
+                        <legend className="f1 fw6 ph0 mh0">Register</legend>
+                        <div className="mt3">
+                            <label className="db fw6 lh-copy f6" htmlFor="name">Name</label>
+                            <input className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
+                            required
+                            type="text"
+                            name="name" 
+                            id="name" 
+                            onChange={this.onNameChange}
+                            />
+                        </div>
+                        <div className="mt3f">
+                            <label className="db fw6 lh-copy f6" htmlFor="email-address">Email</label>
+                            <input className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
+                            required
+                            type="email"
+                            name="email-address" 
+                            id="email-address"
+                            onChange={this.onEmailChange}
+                            />
+                        </div>
+                        <div className="mv3">
+                            <label className="db fw6 lh-copy f6" htmlFor="password">Password</label>
+                            <input className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
+                            required
+                            type="password"
+                            name="password" 
+                            id="password"
+                            onChange={this.onPasswordChange}
+                            />
+                        </div>
+                        </fieldset>
+                        <div className="">
+                        <input
+                            onClick={this.onSubmitSignIn} // defining function, not calling
+                            className="br-pill ph3 pv2 input-reset ba b--white white bg-transparent grow pointer f6 dib"
+                            type="submit"
+                            value="Register" />
+                        </div>
+                        <div className="lh-copy mt3">
+                        </div>
+                    </div>
+                </main>
+            </article>
+        )
+    }
+}
+
+export default Register;
