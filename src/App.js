@@ -8,8 +8,6 @@ import FaceRecognition from './components/faceRecognition/FaceRecognition.js'
 import Particles from "react-tsparticles";
 import SignIn from "./components/signIn/SignIn.js";
 import Register from "./components/register/Register.js";
-// import { render } from '@testing-library/react';
-// import Clarifai from 'clarifai';
 
 // const app = new Clarifai.App({
 //  apiKey: 'e2251cc2cbad4eacbfae87ce8c9f35bd'
